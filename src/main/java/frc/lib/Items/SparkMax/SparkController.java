@@ -10,7 +10,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.lib.configs.Sparkmax.SparkControllerInfo;
 import frc.lib.util.CANSparkMaxUtil;
 import frc.lib.util.CANSparkMaxUtil.Usage;
-import frc.robot.Constants;
 
 public class SparkController {
     public CANSparkMax spark;
@@ -31,7 +30,6 @@ public class SparkController {
     public double bLim = 0;
     public boolean fEnable = false;
     public boolean bEnable = false;
-    public double[] sva = Constants.PID.driveMotorsSVA;
 
     /**
      * Constants to use when creating the Sparkmax Config Item

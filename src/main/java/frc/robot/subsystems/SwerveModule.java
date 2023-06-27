@@ -36,7 +36,7 @@ public class SwerveModule {
 
   private final SimpleMotorFeedforward feedforward =
       new SimpleMotorFeedforward(
-          drive.sva[0], drive.sva[1], drive.sva[2]);
+          Constants.Swerve.driveMotorsSVA[0], Constants.Swerve.driveMotorsSVA[1], Constants.Swerve.driveMotorsSVA[2]);
 
   public SwerveModule(SwerveModuleInfo Info) {
     this.moduleNumber = Info.moduleNumber;

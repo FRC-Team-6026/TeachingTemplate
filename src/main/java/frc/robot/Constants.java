@@ -59,6 +59,10 @@ public final class Constants {
             new Translation2d(-trackLength / 2.0, trackWidth / 2.0),
             new Translation2d(-trackLength / 2.0, -trackWidth / 2.0));
 
+        /* Drive Motor Characterization Values */
+        /* {Static, Velocity, Acceleration} */    
+        public static final double[] driveMotorsSVA = new double[] {0.3, 2.55, 0.27};
+
     }
 
     public static final class AutoConstants {
@@ -87,12 +91,6 @@ public final class Constants {
         /* Swerve PIDs */
         public static final double[] drivePID = new double[] {0.3, 0.0, 0.0, 0.0};
         public static final double[] anglePID = new double[] {0.01, 0.0, 0.0, 0.0};
-
-        /* Special Values */
-
-        /* Drive Motor Characterization Values */                       // Not Known Where To Put These Values so Special Holding Cell for Temporary Storage
-        /* {Static, Velocity, Acceleration} */                          // Also Unknown if these are Going to be Kept as Unknown if these or SparkMax FF is More Efficent
-        public static final double[] driveMotorsSVA = new double[] {0.3, 2.55, 0.27};
 
     }
 
