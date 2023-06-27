@@ -1,0 +1,8 @@
+This code is developed by FRC Team 6026 deriving from FRC year 2023 - ChargedUp's code.
+Special thanks must go to FRC Team 3512 of Whose Code Was the Base of our team's 2023 code as far as the swerve drive goes and would not have been able to happen without them.
+
+This repository utilizes the use of SparkMax Controllers, Neo Motors, and a Navx2 Gyro for the creation of said repository.
+
+As well, this repository also utilizes the ratios for the MK4i modules from Swerve Drive Specialties with the L2 variation, although double checking these ratios as to if they are still true would be advised.
+
+Lastly, this repository will be created around the possibility that the 2024 WPILib release removes period calls for subsystems themselves and instead will outsource as much reporting and data updates as possible based on that assumption/possibility to minimize potential issues down the road.
