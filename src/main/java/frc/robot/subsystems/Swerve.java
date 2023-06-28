@@ -60,6 +60,7 @@ public class Swerve extends SubsystemBase {
       SmartDashboard.putNumber("Mod " + mod.moduleNumber + " desired angle: ", modState.angle.getDegrees());
       SmartDashboard.putNumber("Mod " + mod.moduleNumber + " desired velocity: ", modState.speedMetersPerSecond);
     }
+    swerveOdometry.update(getAngle(), getPositions());
   }
 
   public void xPattern(){
@@ -151,11 +152,6 @@ public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFir
        )
    );
 }
-
-  @Override
-  public void periodic() {
-    swerveOdometry.update(getAngle(), getPositions());
-  }
 
   public float getPitch(){
     if (negativePitch){
