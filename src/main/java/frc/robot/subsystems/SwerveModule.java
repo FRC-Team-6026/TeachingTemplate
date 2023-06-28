@@ -54,13 +54,11 @@ public class SwerveModule {
     angleMotor = angle.spark;
     integratedAngleEncoder = angleMotor.getEncoder();
     angleController = angleMotor.getPIDController();
-    angle.configureSpark();
 
     /* Drive Motor Config */
     driveMotor = drive.spark;
     driveEncoder = driveMotor.getEncoder();
     driveController = driveMotor.getPIDController();
-    drive.configureSpark();
 
     lastAngle = getState().angle;
   }
