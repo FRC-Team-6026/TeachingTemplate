@@ -13,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,8 +29,6 @@ public class Swerve extends SubsystemBase {
 
   private boolean isX = false;
 
-  private Field2d field;
-
   private boolean negativePitch = false;
 
   public static boolean leveling = false;
@@ -46,9 +43,6 @@ public class Swerve extends SubsystemBase {
     }
     
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getAngle(), getPositions());
-
-    field = new Field2d();
-    SmartDashboard.putData("Field", field);
   }
 
   public void drive(
@@ -161,7 +155,6 @@ public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFir
   @Override
   public void periodic() {
     swerveOdometry.update(getAngle(), getPositions());
-    field.setRobotPose(getPose());
   }
 
   public float getPitch(){
