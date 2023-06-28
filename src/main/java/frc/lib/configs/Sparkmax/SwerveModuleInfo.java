@@ -18,8 +18,8 @@ public class SwerveModuleInfo {
 
     public SwerveModuleInfo(int moduleNumber){
         this.moduleNumber = moduleNumber;
-        drive = new SparkController(Constants.Setup.driveMotors[moduleNumber], new SparkControllerInfo().drive());
-        angle = new SparkController(Constants.Setup.angleMotors[moduleNumber], new SparkControllerInfo().angle());
+        drive = new SparkController(Constants.Setup.driveMotors[moduleNumber], new SparkControllerInfo().drive(),null,null,null,null);
+        angle = new SparkController(Constants.Setup.angleMotors[moduleNumber], new SparkControllerInfo().angle(),null,null,null,null);
         cancoder = new CANCoder(Constants.Setup.moduleCancoders[moduleNumber]);
         angleOffset = Constants.Setup.angleOffsets[moduleNumber];
         xPos = Constants.Setup.xposition[moduleNumber];

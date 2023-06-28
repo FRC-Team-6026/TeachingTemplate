@@ -31,20 +31,26 @@ public class SparkController {
     public boolean fEnable = false;
     public boolean bEnable = false;
 
-    /**
-     * Constants to use when creating the Sparkmax Config Item
-     * 
-     * @param canbusNumber
-     * @param canbusUse
-     * @param currentLim
-     * @param invert
-     * @param idleMode
-     * @param posConversion
-     * @param velConversion
-     * @param pidList
-     * @param voltageComp
-     */
+
+    /* Creates and Configures the Sparkmax Controller*/
     public SparkController(int canbusNumber, SparkControllerInfo Info){
+        this.canbusNumber = canbusNumber;
+        this.canbusUse = Info.canbusUse;
+        this.currentLim = Info.currentLim;
+        this.invert = Info.invert;
+        this.idleMode = Info.idleMode;
+        this.posConversion = Info.posConversion;
+        this.velConversion = Info.velConversion;
+        this.pidList = Info.pidList;
+        this.voltageComp = Info.voltageComp;
+        spark = new CANSparkMax(canbusNumber, MotorType.kBrushless);
+        sparkEncode = spark.getEncoder();
+        sparkControl = spark.getPIDController();
+        configureSpark();
+     }
+
+    /* Creates and Configures the Sparkmax Controller Note: Pass null to N/A fields */
+    public SparkController(int canbusNumber, SparkControllerInfo Info, Double min, Double max, Double fLim, Double bLim){
     this.canbusNumber = canbusNumber;
     this.canbusUse = Info.canbusUse;
     this.currentLim = Info.currentLim;
@@ -54,27 +60,29 @@ public class SparkController {
     this.velConversion = Info.velConversion;
     this.pidList = Info.pidList;
     this.voltageComp = Info.voltageComp;
+    
+    if(max != null){
+        this.max = max;
+    }
+    if(min != null){
+        this.min = min;
+    }
+    if(fLim != null){
+        this.fLim = fLim;
+        fEnable = true;
+    }
+    if(bLim != null){
+        this.bLim = bLim;
+        bEnable = true;
+    }
+
     spark = new CANSparkMax(canbusNumber, MotorType.kBrushless);
     sparkEncode = spark.getEncoder();
     sparkControl = spark.getPIDController();
+    configureSpark();
     }
 
-    public void addOutputLim(double min, double max){
-        this.min = min;
-        this.max = max;
-    }
-
-    public void addForwardSoft(double fLim){
-        fEnable = true;
-        this.fLim = fLim;
-    }
-
-    public void addBackwardSoft(double bLim){
-        bEnable = true;
-        this.bLim = bLim;
-    }
-
-    /* Make this the last command run during setup */
+    /* Sets and Flashes the Sparkmax to Passed States */
     public void configureSpark(){
         spark.restoreFactoryDefaults();
         CANSparkMaxUtil.setCANSparkMaxBusUsage(spark, canbusUse);
