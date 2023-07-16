@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.lib.dashboard.reporting.Report;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Swerve;
 
@@ -34,6 +35,8 @@ public class RobotContainer {
   private boolean robotCentric = false;
 
 
+  private final Report report = new Report();
+
 
   /* Subsystems */
   private final Swerve swerve = new Swerve(); 
@@ -47,7 +50,9 @@ public class RobotContainer {
             () -> -driver.getRawAxis(rotationAxis),
             () -> robotCentric));
 
-    configureBindings();
+    report.setDefaultCommand(new InstantCommand(() -> report.report()));
+
+    configureBindings();    
   }
 
   private void configureBindings() {

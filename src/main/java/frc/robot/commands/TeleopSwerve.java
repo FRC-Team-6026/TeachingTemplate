@@ -47,7 +47,7 @@ public class TeleopSwerve extends CommandBase {
     double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.Swerve.stickDeadband);
     double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.Swerve.stickDeadband);
 
-    //cube inputs to give finer control at low end.
+    //cubes inputs to give finer control at low end
     translationVal = translationVal * translationVal * translationVal;
     strafeVal = strafeVal * strafeVal * strafeVal;
     rotationVal = rotationVal * rotationVal * rotationVal;

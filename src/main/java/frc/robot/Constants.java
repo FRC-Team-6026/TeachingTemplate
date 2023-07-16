@@ -38,7 +38,7 @@ public final class Constants {
         public static final double wheelCircimference = wheelDiameter * Math.PI;
 
         /* Gyro Direction Toggle */
-        public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW-
+        public static final boolean invertGyro = true; // Always ensure Gyro is CCW+ CW- (Clockwise is increasing rotation values)
 
         /* Cancoder Invert */
         public static final boolean canCoderInvert = true;
@@ -47,7 +47,7 @@ public final class Constants {
         public static final double maxSpeed = 5.00; // meters per second
         public static final double maxAngularVelocity = 4.25; // radians per second
 
-        /* Mk4i Module */
+        /* Mk4i Module Gear Ratios */
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
         public static final double angleGearRatio = (150.0/7.0); // 150:7
     
