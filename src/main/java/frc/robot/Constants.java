@@ -21,7 +21,7 @@ public final class Constants {
 
         /* Swerve Motor Inverts */
         public static final boolean driveInvert = false;
-        public static final boolean angleInvert = true;
+        public static final boolean angleInvert = true; //Set false for MK4 modules
     
     }
 
