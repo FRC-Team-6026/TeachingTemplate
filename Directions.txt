@@ -1,0 +1,52 @@
+*Note: When the school year starts up it will be a project to get an introductory video to demonstrate each of these instructions and what to do, however this is not guarenteed but will be something striven towards.
+
+*Note2: These instructions will be a rough draft until this message is removed from the repository, while the information will be as accurate as possible, the instructions may be somewhat scattered and poor until further revisions are made.
+
+*Note3: A more thourough documentation text document will be added at a later time as spare free time is found to test and verify if all methods are working and are optimal, this will be done later once school has started and been verified.
+
+Initial Setup Instructions for Swerve Drive Testing (MK4 Module additional instructions will be located at the bottom):
+
+1. Verify, or modify, the cancoder IDs of the motors and angle sensors on each swerve drive module.
+The Numbering sequence for each module is as follows (Although you can modify this instead of re-numbering the cancoders in the Constants.java Setup class if desired):
+Front-Left: Module 0 - DriveMotor 1 - AngleMotor 2 - AngleSensor 9
+Front-Right: Module 1 - DriveMotor 3 - AngleMotor 4 - AngleSensor 10
+Back-Left: Module 2 - DriveMotor 5 - AngleMotor 6 - AngleSensor 11
+Back-Right: Module 3 - DriveMotor 7 - AngleMotor 8 - AngleSensor 12
+
+2. Determine the AngleOffsets of each module.
+(Verify that in Constants.java the angleOffset array is fulled with 4 values of 0 then deploy the code, elsewise this will have your numbers be completely wrong)
+This can be done one or two ways, but the recommended way is to turn all modules to face forward (Verify that the forward input would have the robot move forward) and use a straight bracket to put the wheels in line to the best of your ability.
+The straigher and more accurate during this step is better.
+Then you will grab the angle listed on the smartdashboard and insert them into the corresponding slot in the Constats.java Setup AngleOffsets array and then redeploy the code, doing so should result in the modules resetting to straight ahead when the robot code is run.
+
+3. Set your swerve drivebase dimensions.
+*THIS IS NOT THE EXTERNAL FRAME DIMENSIONS FOR YOUR ROBOT AND IS SETUP ONLY FOR A RECTANGULAR CONFIGURATION IN THIS CODEBASE'S CODE, MODIFY CODE IF NOT RECTANGULAR*
+Elsewise to the warning, in the Constants.java Swerve class, insert the difference bewtween the central wheel rotation pivots as the width and lenght for the swerve class (Or in the case of my knowlege of the MK4i, unknown if its the same for MK4, the center of the angle reader approximately).
+The default code in this repository has it converted from inches to meters, but you can delete the code and enter in meter measurements if you are a wierd tea drinking Britian fan.
+
+4. Verify the diameter of your wheels.
+This may seem benign, but the wear on the swerve module's wheels do make a difference over the duration of use and should be recounted if you are doing any kind of precise movements, especially in closed loop commands.
+
+5. Verify Gyro orientation. 
+With the Navx2 listed in the original readme, this shouldnt need to be changed, but if you are subbing in another Gyro, verify that this continues to be true. Also with another Gyro you will need to sub out the code which is predominantly in Swerve.java and in one or two spots elsewhere, where is unknown at time of writing.
+
+6. Set desired max speeds.
+This will vary bot to bot and team to team, so changing the values on speed should be taken into account on a team to team basis, although it is HIGHLY reccomeneded to turn these values WAY down for teams testing for the first time.
+
+7. Verify Gear Ratios.
+The code is created with the MK4i L2 variation in mind, make sure that these values refect your own module.
+
+8. Electrical warning.
+Not exactly a code setup warning, but one to MAKE SURE YOUR BUILD TEAM/ELECTRICAL TEAM KNOW, The Drive Motor is allowed by program to draw 80 AMPS and the angle motor 20 AMPS, this is something to keep in mind when you are dealing with the breakers on the PDH.
+
+
+
+MK4 Additional Instructions:
+*Note: We do not have an MK4 module to test these code changes with, so feedback as to if anything else may differ on your bases would be HIGHLY appreciated so that it can be added to these instructions.
+
+In Constants.java you need to set angleInvert = false
+(Not known, but possible driveInvert may need to be swapped as well, although this isn't thought to be needed as the original listed setup procedure would compensate for this)
+
+Verifying the angle motor gear ratio would be recommended as it is unknown as to if the modules rotation ratios change from the MK4 and MK4i.
+
+That should be all that is needed but once again, this code has not been tested on anything resembling a MK4, although the only major change is motor orientation so it should be fine.

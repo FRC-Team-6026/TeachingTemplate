@@ -10,3 +10,7 @@ The control system assumption with this current revision of the program controls
 SmartDashboard is used for data feedback to the user-client of the robot.
 
 Lastly, this repository's subsystems will be partially modified around the possibility that the 2024 WPILib release removes period calls for subsystems themselves and instead will outsource as much reporting and data updates as possible based on that assumption/possibility to minimize potential issues down the road.
+
+
+
+Directions for setup and management can be found located in Directions.txt.
