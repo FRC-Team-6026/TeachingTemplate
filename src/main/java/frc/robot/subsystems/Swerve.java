@@ -55,7 +55,11 @@ public class Swerve extends SubsystemBase {
                 : new ChassisSpeeds(translation.getX(), translation.getY(), rotation));
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
       for (SwerveModule mod : mSwerveMods) {
-      mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop, isX);
+        if(isX){
+          mod.setDesiredState(mod.xState, isOpenLoop);
+        } else {
+          mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+        }
       var modState = swerveModuleStates[mod.moduleNumber];
       SmartDashboard.putNumber("Mod " + mod.moduleNumber + " desired angle: ", modState.angle.getDegrees());
       SmartDashboard.putNumber("Mod " + mod.moduleNumber + " desired velocity: ", modState.speedMetersPerSecond);
@@ -80,7 +84,7 @@ public class Swerve extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.maxSpeed);
 
     for (SwerveModule mod : mSwerveMods) {
-      mod.setDesiredState(desiredStates[mod.moduleNumber], false, isX);
+      mod.setDesiredState(desiredStates[mod.moduleNumber], false);
     }
   }
 

@@ -32,7 +32,7 @@ public class SwerveModule {
   private final SparkMaxPIDController driveController;
   private final SparkMaxPIDController angleController;
 
-  private final SwerveModuleState xState;
+  public final SwerveModuleState xState;
 
   private final SimpleMotorFeedforward feedforward =
       new SimpleMotorFeedforward(
@@ -63,18 +63,13 @@ public class SwerveModule {
     lastAngle = getState().angle;
   }
 
-  public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop, boolean X) {
+  public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop) {
     // Custom optimize command, since default WPILib optimize assumes continuous controller which
     // REV and CTRE are not
     desiredState = OnboardModuleState.optimize(desiredState, getState().angle);
 
-    if(X){
-      setAngle(xState, X);
-      setSpeed(xState, isOpenLoop);
-    } else {
-      setAngle(desiredState, X);
+      setAngle(desiredState);
       setSpeed(desiredState, isOpenLoop);
-    }
   }
 
   void resetToAbsolute() {
@@ -95,10 +90,7 @@ public class SwerveModule {
     }
   }
 
-  private void setAngle(SwerveModuleState desiredState, boolean isX) {
-    if(isX){
-      angleController.setReference(desiredState.angle.getDegrees(), ControlType.kPosition);
-    } else {
+  private void setAngle(SwerveModuleState desiredState) {
     // Prevent rotating module if speed is less then 1%. Prevents jittering.
     Rotation2d angle =
         (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Swerve.maxSpeed * 0.01))
@@ -107,7 +99,6 @@ public class SwerveModule {
 
     angleController.setReference(angle.getDegrees(), ControlType.kPosition);
     lastAngle = angle;
-    }
   }
 
   private Rotation2d getAngle() {
