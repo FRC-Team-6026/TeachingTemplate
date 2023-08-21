@@ -68,5 +68,10 @@ public class RobotContainer {
 
   public void teleopInit(){
     swerve.xPatternFalse();
+    swerve.resetToAbsolute();
+  }
+
+  public void autoInit(){
+    swerve.resetToAbsolute();
   }
 }
