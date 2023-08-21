@@ -38,11 +38,18 @@ public class Swerve extends SubsystemBase {
     gyro.reset();
     zeroGyro();
 
-    for(int i = 0; i < 3; i++){
+    mSwerveMods = new SwerveModule[4];
+
+    for(int i = 0; i <= 3; i++){
         mSwerveMods[i] = new SwerveModule(new SwerveModuleInfo(i));
     }
     
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getAngle(), getPositions());
+  }
+
+  @Override
+  public void periodic(){
+    report();
   }
 
   public void drive(
@@ -173,4 +180,15 @@ public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFir
   public AHRS getGyro(){
     return gyro;
   }
+
+  public void report(){
+    for (SwerveModule mod : mSwerveMods) {
+        SmartDashboard.putNumber(
+            "Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
+        SmartDashboard.putNumber(
+            "Mod " + mod.moduleNumber + " Integrated", mod.getState().angle.getDegrees());
+        SmartDashboard.putNumber(
+            "Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);      
+      }
+}
 }
