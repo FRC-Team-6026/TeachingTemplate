@@ -1,7 +1,5 @@
-*Repository should be repaired as of now, Although physical integrity of robot tested upon is questionable, however control logic was never changed from a pristine shape robot so integrity issues with the repository is doubtful*
-
-This code is developed by FRC Team 6026 deriving from FRC year 2023 - ChargedUp's code.
-Special thanks must go to FRC Team 3512 of whose code was the base of our team's 2023 code, and a majority of the in-depth logic for the swerve drive and we would not have been able to properly function during the build season without it due to some outside limitations on our time getting used to the swerve drive format.
+This code is developed by FRC Team 6026 deriving from FRC year 2023 - ChargedUp's code with modifications and a cleaner more modular design setup.
+Special thanks must go to FRC Team 3512 (and 364, the creaters of the original ported repository) of whose code was the base of our team's 2023 code, and a majority of the in-depth logic for the swerve drive and we would not have been able to properly function during the build season without it due to some outside limitations on our time getting used to the swerve drive format.
 
 This repository utilizes the use of SparkMax Controllers, Neo Motors, and a Navx2 Gyro for the creation of said repository.
 
