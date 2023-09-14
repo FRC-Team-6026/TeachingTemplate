@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.ctre.phoenix.sensors.Pigeon2;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
@@ -22,7 +23,7 @@ import frc.lib.configs.Sparkmax.SwerveModuleInfo;
 import frc.robot.Constants;
 
 public class Swerve extends SubsystemBase {
-  private final AHRS gyro;
+  private final Pigeon2 gyro;
 
   private SwerveDriveOdometry swerveOdometry;
   private SwerveModule[] mSwerveMods;
@@ -34,8 +35,7 @@ public class Swerve extends SubsystemBase {
   public static boolean leveling = false;
 
   public Swerve() {
-    gyro = new AHRS();
-    gyro.reset();
+    gyro = new Pigeon2(Constants.Setup.pigeonID);
     zeroGyro();
 
     mSwerveMods = new SwerveModule[4];
@@ -120,8 +120,7 @@ public class Swerve extends SubsystemBase {
   }
 
   public void zeroGyro() {
-    gyro.zeroYaw();
-    gyro.setAngleAdjustment(0);
+    gyro.setYaw(0);
     negativePitch = false;
   }
 
@@ -131,8 +130,8 @@ public class Swerve extends SubsystemBase {
 
   public Rotation2d getAngle() {
     return (Constants.Swerve.invertGyro)
-        ? Rotation2d.fromDegrees(360 - gyro.getAngle())
-        : Rotation2d.fromDegrees(gyro.getAngle());
+        ? Rotation2d.fromDegrees(360 - gyro.getYaw())
+        : Rotation2d.fromDegrees(gyro.getYaw());
   }
 
   public void resetToAbsolute() {
@@ -166,18 +165,18 @@ public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFir
 
   public float getPitch(){
     if (negativePitch){
-      return -gyro.getPitch();
+      return -(float)gyro.getPitch();
     } else {
-      return gyro.getPitch();
+      return (float)gyro.getPitch();
     }
   }
 
   public void invertGyro(){
-    gyro.setAngleAdjustment(180);
+    gyro.setYaw(180);
     negativePitch = true;
   }
 
-  public AHRS getGyro(){
+  public Pigeon2 getGyro(){
     return gyro;
   }
 

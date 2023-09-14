@@ -13,6 +13,9 @@ Front-Right: Module 1 - DriveMotor 3 - AngleMotor 4 - AngleSensor 10
 Back-Left: Module 2 - DriveMotor 5 - AngleMotor 6 - AngleSensor 11
 Back-Right: Module 3 - DriveMotor 7 - AngleMotor 8 - AngleSensor 12
 
+*Special Pigeon Branch Instructions* 
+Pigeon IMU is by default ID 13. This can be changed in Constants.java Setup pigeonID.
+
 2. Determine the AngleOffsets of each module.
 (Verify that in Constants.java the angleOffset array is fulled with 4 values of 0 then deploy the code, elsewise this will have your numbers be completely wrong)
 This can be done one or two ways, but the recommended way is to turn all modules to face forward (Verify that the forward input would have the robot move forward) and use a straight bracket to put the wheels in line to the best of your ability.

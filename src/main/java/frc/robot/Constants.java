@@ -19,6 +19,9 @@ public final class Constants {
         public static final double[] angleOffsets = new double[] {144.05, 318.86, 323.96, 221.48};
         public static final double[] xposition = new double[] {45, 45, -45, -45};
 
+        /* Special Branch ID */
+        public static final int pigeonID = 13;
+
         /* Swerve Motor Inverts */
         public static final boolean driveInvert = false;
         public static final boolean angleInvert = true; //Set false for MK4 modules
