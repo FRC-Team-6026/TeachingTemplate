@@ -23,6 +23,8 @@ public class SparkController {
     private final double posConversion;
     private final double velConversion;
     private final double[] pidList;
+    private boolean autoPid = false;
+    private double[] pidAutoList;
     private final double voltageComp;
     private double max = 1;
     private double min = -1;
@@ -82,6 +84,12 @@ public class SparkController {
     configureSpark();
     }
 
+    public void addAutoPID(double[] pidAutoList){
+        this.pidAutoList = pidAutoList;
+        autoPid = true;
+        configureSpark();
+    }
+
     /* Sets and Flashes the Sparkmax to Passed States */
     public void configureSpark(){
         spark.restoreFactoryDefaults();
@@ -91,10 +99,16 @@ public class SparkController {
         spark.setIdleMode(idleMode);
         sparkEncode.setVelocityConversionFactor(velConversion);
         sparkEncode.setPositionConversionFactor(posConversion);
-        sparkControl.setP(pidList[0]);
-        sparkControl.setI(pidList[1]);
-        sparkControl.setD(pidList[2]);
-        sparkControl.setFF(pidList[3]);
+        sparkControl.setP(pidList[0], 0);
+        sparkControl.setI(pidList[1], 0);
+        sparkControl.setD(pidList[2], 0);
+        sparkControl.setFF(pidList[3], 0);
+        if(autoPid == true){
+            sparkControl.setP(pidAutoList[0], 1);
+            sparkControl.setI(pidAutoList[1], 1);
+            sparkControl.setD(pidAutoList[2], 1);
+            sparkControl.setFF(pidAutoList[3], 1);
+        }
         spark.enableVoltageCompensation(voltageComp);
         sparkControl.setOutputRange(min, max);
         spark.setSoftLimit(SoftLimitDirection.kForward, ((float)fLim));

@@ -38,4 +38,29 @@ public class SparkControllerInfo {
         return this;
     }
 
+    public SparkControllerInfo rotation(){
+        canbusUse = Usages.rotationUsage;
+        currentLim = Electical.rotationCurrentLim;
+        invert = Setup.rotationInvert;
+        idleMode = IdleModes.rotationIdle;
+        posConversion = ConversionFactors.rotationConversionPositionFactor;
+        velConversion = ConversionFactors.rotationConversionVelocityFactor;
+        pidList = PID.rotationPID;
+        voltageComp = Electical.voltageComp;
+        return this;
+    }
+
+    public SparkControllerInfo extension(){
+        canbusUse = Usages.extensionUsage;
+        currentLim = Electical.extensionCurrentLim;
+        invert = Setup.extensionInvert;
+        idleMode = IdleModes.extensionIdle;
+        posConversion = ConversionFactors.extensionConversionPositionFactor;
+        velConversion = ConversionFactors.extensionConversionVelocityFactor;
+        pidList = PID.extensionPID;
+        voltageComp = Electical.voltageComp;
+        return this;
+    }
+
+
 }
