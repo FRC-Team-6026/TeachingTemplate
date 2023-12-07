@@ -13,7 +13,7 @@ import frc.lib.util.CANSparkMaxUtil.Usage;
 
 public class SparkController {
     public CANSparkMax spark;
-    public RelativeEncoder sparkEncode;
+    public RelativeEncoder sparkEncoder;
     public SparkMaxPIDController sparkControl;
     public final int canbusNumber;
     private final Usage canbusUse;
@@ -46,7 +46,7 @@ public class SparkController {
         this.pidList = Info.pidList;
         this.voltageComp = Info.voltageComp;
         spark = new CANSparkMax(canbusNumber, MotorType.kBrushless);
-        sparkEncode = spark.getEncoder();
+        sparkEncoder = spark.getEncoder();
         sparkControl = spark.getPIDController();
         configureSpark();
      }
@@ -79,7 +79,7 @@ public class SparkController {
     }
 
     spark = new CANSparkMax(canbusNumber, MotorType.kBrushless);
-    sparkEncode = spark.getEncoder();
+    sparkEncoder = spark.getEncoder();
     sparkControl = spark.getPIDController();
     configureSpark();
     }
@@ -97,8 +97,8 @@ public class SparkController {
         spark.setSmartCurrentLimit(currentLim);
         spark.setInverted(invert);
         spark.setIdleMode(idleMode);
-        sparkEncode.setVelocityConversionFactor(velConversion);
-        sparkEncode.setPositionConversionFactor(posConversion);
+        sparkEncoder.setVelocityConversionFactor(velConversion);
+        sparkEncoder.setPositionConversionFactor(posConversion);
         sparkControl.setP(pidList[0], 0);
         sparkControl.setI(pidList[1], 0);
         sparkControl.setD(pidList[2], 0);
@@ -116,7 +116,7 @@ public class SparkController {
         spark.enableSoftLimit(SoftLimitDirection.kForward, fEnable);
         spark.enableSoftLimit(SoftLimitDirection.kReverse, bEnable);
         spark.burnFlash();
-        sparkEncode.setPosition(0.0);    
+        sparkEncoder.setPosition(0.0);    
     }
     
 }

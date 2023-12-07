@@ -24,7 +24,6 @@ public final class Constants {
         public static final int rotationId = 15;
         public static final int extensionId = 16;
 
-
         /* Swerve Motor Inverts */
         public static final boolean driveInvert = false;
         public static final boolean angleInvert = true; //Set false for MK4 modules
@@ -171,11 +170,11 @@ public final class Constants {
         public static final double angleConversionVelocityFactor = angleConversionPositionFactor / 60 ; //rpm to rps
 
         /* Arm Conversions */
-        private static final double rotationGearRatio = 80;
+        public static final double rotationGearRatio = 80;
         public static final double rotationConversionPositionFactor = 360.0 / rotationGearRatio;
         public static final double rotationConversionVelocityFactor = rotationConversionPositionFactor / 60.0;
 
-        private static final double extensionGearRatio = 2.25;
+        public static final double extensionGearRatio = 2.25;
         public static final double extensionConversionPositionFactor = Arm.spoolDiameter * Math.PI / extensionGearRatio;
         public static final double extensionConversionVelocityFactor = extensionConversionPositionFactor / 60.0;
 
