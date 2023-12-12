@@ -58,9 +58,10 @@ public class Arm extends SubsystemBase{
         this._commandTimer = new Timer();
     }
 
-    public void setDesiredPositions(GrabArmPositions position){
+    public void setDesiredPosition(GrabArmPositions position){
         _desiredRotation = position.rotation;
         _desiredExtension = position.extension;
+        calculateProfiles();
     }
 
     public void goToDesiredRotation(){
@@ -125,6 +126,13 @@ public class Arm extends SubsystemBase{
         TrapezoidProfile.State desiredExtensionState = new TrapezoidProfile.State(_desiredExtension, 0.0);
         _rotationProfile = new TrapezoidProfile(_rotationConstraints, desiredRotationState, _rotationState);
         _extensionProfile = new TrapezoidProfile(_extensionConstraints, desiredExtensionState, _extensionState);
+    }
+
+    public boolean isFinished(){
+        if(Math.abs(_desiredRotation - _rotationEncoder.getPosition()) < Constants.Arm.rotationPositionSettingToleranceDegrees && Math.abs(_desiredExtension - _extensionEncoder.getPosition()) < Constants.Arm.extensionPositionSettingToleranceInches){
+            return true;
+        }
+        return false;
     }
 
     public void compensationCalulations(){
