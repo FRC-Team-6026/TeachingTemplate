@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmDefaultHandling;
+import frc.robot.commands.ArmPositionHandling;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Swerve;
@@ -18,6 +19,7 @@ import frc.robot.subsystems.Swerve;
 public class RobotContainer {
   /* Controllers */
   private final XboxController driver = new XboxController(0);
+  private final XboxController operator = new XboxController(1);
 
   /* Drive Controls */
   private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -35,6 +37,25 @@ public class RobotContainer {
   new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
   private boolean robotCentric = false;
 
+  /* Operator Buttons */
+  private final JoystickButton topCone = 
+  new JoystickButton(operator, XboxController.Button.kY.value);
+  private final JoystickButton topCube = 
+  new JoystickButton(operator, XboxController.Button.kX.value);
+  private final JoystickButton midCone = 
+  new JoystickButton(operator, XboxController.Button.kB.value);
+  private final JoystickButton midCube = 
+  new JoystickButton(operator, XboxController.Button.kA.value);
+
+  private final JoystickButton subStation = 
+  new JoystickButton(operator, XboxController.Button.kBack.value);
+  private final JoystickButton floor = 
+  new JoystickButton(operator, XboxController.Button.kStart.value);
+  private final JoystickButton stow = 
+  new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+
+  private final JoystickButton grabber = 
+  new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
 
   /* Subsystems */
   private final Swerve swerve = new Swerve(); 
@@ -48,9 +69,9 @@ public class RobotContainer {
             () -> -driver.getRawAxis(strafeAxis),
             () -> -driver.getRawAxis(rotationAxis),
             () -> robotCentric));
-
+  
     arm.setDefaultCommand(new ArmDefaultHandling(arm));
-    
+
     configureBindings();    
   }
 
@@ -61,9 +82,21 @@ public class RobotContainer {
       robotCentric = !robotCentric;
       SmartDashboard.putBoolean("Is Robot Centric", robotCentric);
     }));
-
     resetOdometry.onTrue(new InstantCommand(() -> swerve.resetToAbsolute()));
     xSwerve.onTrue(new InstantCommand(() -> swerve.xPattern()));
+
+    /* Operator Buttons */
+    topCone.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.TopCone));
+    topCube.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.TopCube));
+    midCone.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.MidCone));
+    midCube.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.MidCube));
+
+    subStation.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.Substation));
+    floor.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.Floor));
+    stow.onTrue(new ArmPositionHandling(arm, Arm.GrabArmPositions.Stow));
+
+    grabber.toggleOnTrue(new InstantCommand(() -> arm.openGrabber()));
+    grabber.toggleOnFalse(new InstantCommand(() -> arm.closeGrabber()));
 
   }
 
