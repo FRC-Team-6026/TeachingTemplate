@@ -50,6 +50,6 @@ MK4 Additional Instructions:
 In Constants.java you need to set angleInvert = false
 (Not known, but possible driveInvert may need to be swapped as well, although this isn't thought to be needed as the original listed setup procedure would compensate for this)
 
-Verifying the angle motor gear ratio would be recommended as it is unknown as to if the modules rotation ratios change from the MK4 and MK4i.
+Change within Constants.java of the angle gear ratio from 150/7 -> 12.8 (As of writing final gear ratio is known but not actual teeth to teeth #s).
 
 That should be all that is needed but once again, this code has not been tested on anything resembling a MK4, although the only major change is motor orientation so it should be fine.
