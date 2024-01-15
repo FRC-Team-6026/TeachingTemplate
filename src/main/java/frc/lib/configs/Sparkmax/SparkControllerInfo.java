@@ -1,6 +1,6 @@
 package frc.lib.configs.Sparkmax;
 
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkBase.IdleMode;
 import frc.lib.util.CANSparkMaxUtil.Usage;
 import frc.robot.Constants.*;
 

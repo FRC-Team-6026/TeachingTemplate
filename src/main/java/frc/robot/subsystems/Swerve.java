@@ -1,10 +1,9 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,10 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.configs.Sparkmax.SwerveModuleInfo;
 import frc.robot.Constants;
@@ -31,7 +29,7 @@ public class Swerve extends SubsystemBase {
 
   private boolean negativePitch = false;
 
-  public static boolean leveling = false;
+  private Field2d field = new Field2d();
 
   public Swerve() {
     gyro = new AHRS();
@@ -45,6 +43,31 @@ public class Swerve extends SubsystemBase {
     }
     
     swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getAngle(), getPositions());
+
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetOdometry, 
+      this::getSpeeds, 
+      this::driveRobotRelative, 
+      Constants.Swerve.pathFollowerConfig,
+      () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+              return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+      },
+      this
+    );
+
+    // Set up custom logging to add the current path to a field 2d widget
+    PathPlannerLogging.setLogActivePathCallback((poses) -> field.getObject("path").setPoses(poses));
+
+    SmartDashboard.putData("Field", field);
   }
 
   @Override
@@ -95,6 +118,13 @@ public class Swerve extends SubsystemBase {
     }
   }
 
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(targetSpeeds);
+    setModuleStates(targetStates);
+  }
+
   public Pose2d getPose() {
     return swerveOdometry.getPoseMeters();
   }
@@ -119,6 +149,10 @@ public class Swerve extends SubsystemBase {
     return positions;
   }
 
+  public ChassisSpeeds getSpeeds(){
+    return Constants.Swerve.swerveKinematics.toChassisSpeeds(getStates());
+  }
+
   public void zeroGyro() {
     gyro.zeroYaw();
     gyro.setAngleAdjustment(0);
@@ -136,29 +170,6 @@ public class Swerve extends SubsystemBase {
         mod.resetToAbsolute();
     }
   }
-
-  // Assuming this method is part of a drivetrain subsystem that provides the necessary methods
-public Command followTrajectoryCommand(PathPlannerTrajectory traj, boolean isFirstPath) {
-  return new SequentialCommandGroup(
-       new InstantCommand(() -> {
-         // Reset odometry for the first path you run during auto
-         if(isFirstPath){
-             this.resetOdometry(traj.getInitialHolonomicPose());
-         }
-       }),
-       new PPSwerveControllerCommand(
-           traj, 
-           this::getPose, // Pose supplier
-           Constants.Swerve.swerveKinematics, // SwerveDriveKinematics
-           new PIDController(Constants.AutoConstants.kPXController, 0, 0), // X controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-           new PIDController(Constants.AutoConstants.kPYController, 0, 0), // Y controller (usually the same values as X controller)
-           new PIDController(Constants.AutoConstants.kPThetaController, 0, 0), // Rotation controller. Tune these values for your robot. Leaving them 0 will only use feedforwards.
-           this::setModuleStates, // Module states consumer
-           true, // Should the path be automatically mirrored depending on alliance color. Optional, defaults to true
-           this // Requires this drive subsystem
-       )
-   );
-}
 
   public float getPitch(){
     if (negativePitch){

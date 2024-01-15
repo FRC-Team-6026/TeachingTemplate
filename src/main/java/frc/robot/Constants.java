@@ -1,6 +1,9 @@
 package frc.robot;
 
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+import com.revrobotics.CANSparkBase.IdleMode;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -51,18 +54,35 @@ public final class Constants {
         public static final double driveGearRatio = (6.75 / 1.0); // 6.75:1
         public static final double angleGearRatio = (150.0 / 7.0); // 150:7
     
-        /* Made in Context of a Square Arrangement */
-        public static final SwerveDriveKinematics swerveKinematics =
-        new SwerveDriveKinematics(
+
+        /* Swerve Module Positions (Currently in solid rectangle context) */
+        public static final Translation2d[] modulePositions = new Translation2d[] {
             new Translation2d(trackLength / 2.0, trackWidth / 2.0),
             new Translation2d(trackLength / 2.0, -trackWidth / 2.0),
             new Translation2d(-trackLength / 2.0, trackWidth / 2.0),
-            new Translation2d(-trackLength / 2.0, -trackWidth / 2.0));
+            new Translation2d(-trackLength / 2.0, -trackWidth / 2.0)
+        };
+
+        /* Swerve Kinematics */
+        public static final SwerveDriveKinematics swerveKinematics =
+        new SwerveDriveKinematics(
+            modulePositions[0],
+            modulePositions[1],
+            modulePositions[2],
+            modulePositions[3]
+        );
 
         /* Drive Motor Characterization Values */
         /* {Static, Velocity, Acceleration} */    
         public static final double[] driveMotorsSVA = new double[] {0.3, 2.55, 0.27};
 
+        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+            new PIDConstants(5.0, 0, 0), // Translation constants 
+            new PIDConstants(5.0, 0, 0), // Rotation constants 
+            maxSpeed, 
+            modulePositions[0].getNorm(), // Drive base radius (distance from center to furthest module) 
+            new ReplanningConfig()
+        );
     }
 
     public static final class AutoConstants {
